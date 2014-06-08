@@ -1,0 +1,17 @@
+{
+  "name": "linux-dot-desktopParser",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "deferred": "^0.7.1",
+    "glob": "^4.0.2",
+    "q": "^1.0.1",
+    "q-io": "^1.11.1"
+  }
+}
