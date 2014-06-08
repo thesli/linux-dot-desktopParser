@@ -4,39 +4,63 @@ fs = require "q-io/fs"
 ofs = require "fs"
 Q = require "q"
 
-getDotDesktopList = (p)->
-  pattern = path.resolve("#{p}/**/*.desktop")
+
+getlistOfDotDesktop = (_path)->
+  pattern = path.resolve "#{_path}/**/*.desktop"
   deferred = Q.defer()
   glob pattern,(err,data)->
-    deferred.reject(err) if err
-    out =
-      path: p
-      list: data
-    deferred.resolve(out)
+    deferred.reject err if err
+    output =
+      dir: _path
+      paths: data
+    deferred.resolve(output)
   return deferred.promise
 
-readFile = (fileList)->
+
+readFiles = (input)->
   deferred = Q.defer()
-  arr = []
-  l = fileList["path"].length
-  for f in fileList["list"]
-    arr.push fs.read(f)
-  Q.all(arr).then (list)->
+  promiseArr = []
+  nameList = []
+  for p in input['paths']
+    fileNameBeginIndex = (p.lastIndexOf("/") + 1)
+    filename = p[fileNameBeginIndex...]
+    nameList.push filename
+    promiseArr.push fs.read(p)
+  Q.all(promiseArr).then (data)->
     obj = {}
-    for lines,i in list
-      line = lines.split("\n")
-      filename = fileList["list"][i][(l)...-1]
-      obj[filename] = line
+    for d,j in data
+      obj[nameList[j]] = d
     deferred.resolve(obj)
   return deferred.promise
 
-parseFile = (obj)->
-  console.log "parseFile here"
-  console.log obj
+parseData = (input)->
+  deferred = Q.defer()
+  ks = Object.keys(input)
+  outputArray = []
+
+  for k in ks
+    domain = ""
+    outObj = {}
+    outObj[k] = {}
+    lines = input[k].split "\n"
+    for line in lines
+      if line == '' || line[0] == '#'
+        continue
+      if line[0] == '[' && line.indexOf(']')!=1
+        domain = line[1...line.indexOf(']')]
+        outObj[k][domain] = {}
+      else
+        eqIndex = line.indexOf("=")
+        lhs = line[0...(eqIndex)]
+        rhs = line[eqIndex+1...]
+        outObj[k][domain][lhs] = rhs
+    outputArray.push outObj
+  deferred.resolve(outputArray)
+  return deferred.promise
 
 result =
-  getDotDesktopList("/usr/share/applications/")
-  .then readFile
-  .then parseFile
+  getlistOfDotDesktop("/usr/share/applications")
+    .then readFiles
+    .then parseData
 
 module.exports = result

@@ -2,8 +2,10 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/index.js" />
         <item url="file://$PROJECT_DIR$/rec.js" />
+        <item url="file://$PROJECT_DIR$/index.js" />
+        <item url="file://$PROJECT_DIR$/test.js" />
+        <item url="file://$PROJECT_DIR$/revIndex.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
@@ -11,8 +13,10 @@
       <root url="file://$PROJECT_DIR$/promiseParser.js" />
       <root url="file://$PROJECT_DIR$/parser.js" />
       <root url="file://$PROJECT_DIR$/promiseParser.js" />
-      <root url="file://$PROJECT_DIR$/index.js" />
       <root url="file://$PROJECT_DIR$/rec.js" />
+      <root url="file://$PROJECT_DIR$/index.js" />
+      <root url="file://$PROJECT_DIR$/test.js" />
+      <root url="file://$PROJECT_DIR$/index.js" />
     </CLASSES>
     <SOURCES />
   </library>
